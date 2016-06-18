@@ -1,0 +1,16 @@
+{
+  "name": "sw",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-plugin-uglify": "^1.0.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^4.0.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify": "0.0.12",
+    "gulp-rev": "^7.1.0",
+    "run-sequence": "^1.2.1"
+  },
+  "author": "Dexecure"
+}

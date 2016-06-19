@@ -1,5 +1,6 @@
 function isFirstPartyDomain(url) {
   var parsedURL =  new URL(url);
+  var firstPartyDomain = dexecure.firstPartyDomain;
   for (var i = firstPartyDomain.length - 1; i >= 0; i--) {
     if (firstPartyDomain[i].toLowerCase() == parsedURL.host.toLowerCase()) {
       return true;
@@ -8,7 +9,7 @@ function isFirstPartyDomain(url) {
   return false;
 }
 
-if (optimisationsEnabled) {
+if (dexecure.optimisationsEnabled) {
   self.addEventListener('install', function(event) {
     event.waitUntil(self.skipWaiting());
   });
@@ -28,8 +29,8 @@ if (optimisationsEnabled) {
       headersToSendJS['ETag'] = event.request.headers.get('ETag');
     }
     var headersToSend = new Headers(headersToSendJS);
-    if (imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
-     var dexecureURL = DEXECURE_SERVER + event.request.url.replace(/^https?\:\/\//i, "");
+    if (dexecure.imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
+     var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\//i, "");
      dexecureURL = decodeURIComponent(dexecureURL);
      event.respondWith(fetch(dexecureURL, {mode: 'cors', headers: headersToSend})
       .then(response => {

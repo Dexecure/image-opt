@@ -23,7 +23,7 @@ gulp.task('concat', () =>
 
 gulp.task('move', () => 
 	gulp
-	.src(['dex-opt.js', 'config.js'])
+	.src(['dex-opt.js', 'config.js', 'index.html'])
 	.pipe(gulp.dest('.tmp'))
 );
 
@@ -32,6 +32,8 @@ gulp.task('rev', () =>
 	.src('.tmp/dexecure.js')
 	.pipe(rev())
 	.pipe(gulp.dest('dist'))
+	.pipe(rev.manifest())
+	.pipe(gulp.dest('.tmp'))
 );
 
 gulp.task('clean', () =>
@@ -40,6 +42,18 @@ gulp.task('clean', () =>
 	.pipe(clean())
 );
 
+gulp.task('html', () => {
+	var fs = require('fs');
+	var insert = require('gulp-insert');
+	var scriptName = JSON.parse(fs.readFileSync('.tmp/rev-manifest.json'))["dexecure.js"];
+	console.log(scriptName);
+	var scriptToInject = `<script>var DEXECURE_URL = "/${scriptName}";</script>`;
+	return gulp
+	.src('.tmp/index.html')
+	.pipe(insert.prepend(scriptToInject))
+	.pipe(gulp.dest("dist"));
+});
+
 gulp.task('default', () => {
-	runSequence('clean', 'move', 'minify', 'concat', 'rev');
+	runSequence('clean', 'move', 'minify', 'concat', 'rev', 'html');
 });

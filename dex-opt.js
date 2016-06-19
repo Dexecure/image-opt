@@ -29,7 +29,8 @@ if (dexecure.optimisationsEnabled) {
       headersToSendJS['ETag'] = event.request.headers.get('ETag');
     }
     var headersToSend = new Headers(headersToSendJS);
-    if (dexecure.imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
+    var imageMatchRegex = new RegExp(dexecure.imageMatchRegex);
+    if (imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
      var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\//i, "");
      dexecureURL = decodeURIComponent(dexecureURL);
      event.respondWith(fetch(dexecureURL, {mode: 'cors', headers: headersToSend})

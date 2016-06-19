@@ -5,6 +5,8 @@ const concat = require('gulp-concat');
 const clean = require('gulp-clean');
 const rev = require('gulp-rev');
 const runSequence = require('run-sequence');
+const merge = require('gulp-merge-json');
+const insert = require('gulp-insert');
 
 gulp.task('minify', () => 
   gulp
@@ -16,14 +18,15 @@ gulp.task('minify', () =>
 
 gulp.task('concat', () =>
 	gulp
-	.src([".tmp/config.js", ".tmp/dex-opt-min.js"])
+	.src([".tmp/config.json", ".tmp/dex-opt-min.js"])
 	.pipe(concat('dexecure.js'))
+	.pipe(insert.prepend("var dexecure = "))
 	.pipe(gulp.dest('.tmp'))
 );
 
 gulp.task('move', () => 
 	gulp
-	.src(['dex-opt.js', 'config.js', 'index.html'])
+	.src(['dex-opt.js', 'index.html'])
 	.pipe(gulp.dest('.tmp'))
 );
 
@@ -44,7 +47,6 @@ gulp.task('clean', () =>
 
 gulp.task('html', () => {
 	var fs = require('fs');
-	var insert = require('gulp-insert');
 	var scriptName = JSON.parse(fs.readFileSync('.tmp/rev-manifest.json'))["dexecure.js"];
 	console.log(scriptName);
 	var scriptToInject = `<script>var DEXECURE_URL = "/${scriptName}";</script>`;
@@ -54,6 +56,13 @@ gulp.task('html', () => {
 	.pipe(gulp.dest("dist"));
 });
 
+gulp.task('config', () => {
+	gulp
+	.src(['config.default.json', 'config.user.json'])
+	.pipe(merge('config.json'))
+	.pipe(gulp.dest('.tmp'))
+});
+
 gulp.task('default', () => {
-	runSequence('clean', 'move', 'minify', 'concat', 'rev', 'html');
+	runSequence('clean', 'move', ['minify', 'config'], 'concat', 'rev', 'html');
 });

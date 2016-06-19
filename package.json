@@ -9,6 +9,7 @@
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
     "gulp-insert": "^0.5.0",
+    "gulp-merge-json": "^0.5.0",
     "gulp-minify": "0.0.12",
     "gulp-rev": "^7.1.0",
     "run-sequence": "^1.2.1"

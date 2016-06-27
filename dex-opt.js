@@ -29,7 +29,7 @@ if (dexecure.optimisationsEnabled) {
       headersToSendJS['ETag'] = event.request.headers.get('ETag');
     }
     var headersToSend = new Headers(headersToSendJS);
-    var imageMatchRegex = new RegExp(dexecure.imageMatchRegex);
+    var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
     if (imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
      var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\//i, "");
      dexecureURL = decodeURIComponent(dexecureURL);
@@ -38,10 +38,13 @@ if (dexecure.optimisationsEnabled) {
         if (response.ok) {
           return response;
         } else {
+          console.log('Responding with original image as optimiser was not reachable ', event.request.url);
           return fetch(event.request);
         }
       })
       .catch(err => {
+        console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
+        console.log('The error was ', err);
         return fetch(event.request);
       }));
    }

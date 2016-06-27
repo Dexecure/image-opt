@@ -1,4 +1,4 @@
-<script>
-"serviceWorker"in navigator&&navigator.serviceWorker.register(DEXECURE_URL).then(function(e){})["catch"](function(e){});
-</script>
 <meta http-equiv="Accept-CH" content="Viewport-Width">
+<script>
+"serviceWorker"in navigator&&navigator.serviceWorker.register(DEXECURE_URL).then(function(e){"/"!=new URL(e.scope).pathname&&console.log("Service worker scope is not /")})["catch"](function(e){console.log("Unable to register service worker ",e)});
+</script>

@@ -39,7 +39,7 @@ if (dexecure.optimisationsEnabled) {
           return response;
         } else {
           console.log('Responding with original image as optimiser was not reachable ', event.request.url);
-          return fetch(event.request);
+          throw new Error('Unable to fetch optimised image');
         }
       })
       .catch(err => {

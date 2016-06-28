@@ -1,6 +1,6 @@
 {
-	"server": "https://di7izdi0sxtsdf.cloudfront.net/",
-	"firstPartyDomain": ["www.cdn.com"],
+	"server": "https://SAMPLE.cloudfront.net/",
+	"firstPartyDomain": ["www.domain.com"],
 	"optimisationsEnabled": true,
 	"imageMatchRegex": "\\.jpe?g|\\.png"
 }

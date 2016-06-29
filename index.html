@@ -1,4 +1,4 @@
 <meta http-equiv="Accept-CH" content="Viewport-Width">
 <script>
-"serviceWorker"in navigator&&navigator.serviceWorker.register(DEXECURE_URL).then(function(e){"/"!=new URL(e.scope).pathname&&console.log("Service worker scope is not /")})["catch"](function(e){console.log("Unable to register service worker ",e)});
+"serviceWorker"in navigator&&navigator.serviceWorker.register(DEXECURE_URL,{scope:'/'}).then(function(e){"/"!=new URL(e.scope).pathname&&console.log("Service worker scope is not /")})["catch"](function(e){console.log("Unable to register service worker. Contact us at support@dexecure.com. with the following error information.");console.log(e)});
 </script>

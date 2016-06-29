@@ -38,13 +38,16 @@ if (dexecure.optimisationsEnabled) {
         if (response.ok) {
           return response;
         } else {
-          console.log('Responding with original image as optimiser was not reachable ', event.request.url);
+          if (dexecure.debugMode)
+            console.log('Responding with original image as optimiser was not reachable ', event.request.url);
           throw new Error('Unable to fetch optimised image');
         }
       })
       .catch(err => {
-        console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
-        console.log('The error was ', err);
+        if (dexecure.debugMode) {
+          console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
+          console.log('The error was ', err);
+        }
         return fetch(event.request);
       }));
    }

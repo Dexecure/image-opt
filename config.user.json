@@ -1,1 +1,4 @@
-{"server":"https://YourURL.cloudfront.net/","firstPartyDomain":["images.website.com","media.website.com"]}
+{
+    "server": "https://YourURL.cloudfront.net/",
+    "firstPartyDomain": ["images.website.com", "media.website.com"]
+}

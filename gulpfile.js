@@ -19,7 +19,7 @@ gulp.task('minify', () =>
 gulp.task('concat', () =>
 	gulp
 	.src([".tmp/config.json", ".tmp/dex-opt-min.js"])
-	.pipe(concat('dexecure.js'))
+	.pipe(concat('dexecure.js', {newLine: ';'}))
 	.pipe(insert.prepend("var dexecure = "))
 	.pipe(gulp.dest('.tmp'))
 );

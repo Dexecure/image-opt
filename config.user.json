@@ -1,4 +1,5 @@
 {
-    "server": "https://YourURL.cloudfront.net/",
-    "firstPartyDomain": ["images.website.com", "media.website.com"]
+	"server": "https://armadiofashion.dexecure.net/",
+	"firstPartyDomain": ["www.armadiofashion.com","armadiofashion.com"],
+	"imageMatchRegex": "\\.jpe?g|\\.png|\\.css|\\.js"
 }

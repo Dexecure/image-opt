@@ -26,7 +26,7 @@ if (dexecure.optimisationsEnabled) {
     var headersToSend = new Headers(headersToSendJS);
     var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
     if (imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
-     var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\/(www.)?armadiofashion\.com\//i, "");
+     var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\//i, "");
      dexecureURL = decodeURIComponent(dexecureURL);
      event.respondWith(fetch(dexecureURL, {mode: 'cors', headers: headersToSend})
       .then(response => {

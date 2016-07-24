@@ -1,7 +1,7 @@
 function urlContainsSignature(input) {
   var potentialSignature = input.substring(input.lastIndexOf('/') + 1);
   potentialSignature = potentialSignature.toLowerCase();
-  return potentialSignature.includes('se') && potentialSignature.includes('st') && potentialSignature.includes('sp') && potentialSignature.includes.('sv') && potentialSignature.includes('sr') && potentialSignature.includes('sig');
+  return potentialSignature.includes('se') && potentialSignature.includes('st') && potentialSignature.includes('sp') && potentialSignature.includes('sv') && potentialSignature.includes('sr') && potentialSignature.includes('sig');
 }
 
 function separateSignatureAndURL(url) {
@@ -15,7 +15,7 @@ function convertToDexecureURL(url) {
                           'rehearsal-media.withjoy.com': 'rehearsal-joy.dexecure.net',
                           'dev.withjoy.com': 'dev-joy.dexecure.net',
                           'rehearsal.withjoy.com': 'rehearsal-joy.dexecure.net',
-                          'ceremony-media.withjoy.com': 'ceremony-media-joy.dexecure.net',
+                          'ceremony-media.withjoy.com': 'localhost:44444',
                           'withjoy.com': 'joy.dexecure.net'
                           };
   var parsedURL = new URL(url);

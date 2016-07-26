@@ -1,5 +1,6 @@
 {
     "server": "https://withjoy.dexecure.net/",
     "firstPartyDomain": ["dev-media.withjoy.com", "rehearsal-media.withjoy.com", "dev.withjoy.com", "rehearsal.withjoy.com", "ceremony-media.withjoy.com", "withjoy.com"],
+    "confirmedImageDomains": ["dev-media.withjoy.com", "rehearsal-media.withjoy.com", "ceremony-media.withjoy.com"],
     "imageMatchRegex": "\\.jpe?g|\\.png|\\.css|\\.js"
 }

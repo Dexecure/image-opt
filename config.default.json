@@ -1,6 +1,7 @@
 {
 	"server": "https://SAMPLE.cloudfront.net/",
 	"firstPartyDomain": ["www.domain.com"],
+	"confirmedImageDomains": [""],
 	"optimisationsEnabled": true,
 	"debugMode": false,
 	"imageMatchRegex": "\\.jpe?g|\\.png"

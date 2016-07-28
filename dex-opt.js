@@ -9,6 +9,17 @@ function isFirstPartyDomain(url) {
   return false;
 }
 
+function isPageEnabled(referrerURL) {
+  var pagesEnabled = ['http://localhost/scentbird_ref_test/','http://localhost/scentbird_ref_test'];
+  if (!referrerURL) return false;
+  var parsedURL = new URL(referrerURL);
+  if(dexecure.debugMode) {
+    console.log('parsed URL is', parsedURL.origin + parsedURL.pathname)
+    console.log('matching URL is ', referrerURL);
+  }
+  return pagesEnabled.indexOf(parsedURL.hostname + parsedURL.pathname);
+}
+
 if (dexecure.optimisationsEnabled) {
   self.addEventListener('install', function(event) {
     event.waitUntil(self.skipWaiting());
@@ -25,7 +36,7 @@ if (dexecure.optimisationsEnabled) {
     
     var headersToSend = new Headers(headersToSendJS);
     var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
-    if (imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
+    if (isPageEnabled(event.request.referrer) && imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
      var dexecureURL = dexecure.server + event.request.url.replace(/^https?\:\/\//i, "");
      dexecureURL = decodeURIComponent(dexecureURL);
      event.respondWith(fetch(dexecureURL, {mode: 'cors', headers: headersToSend})

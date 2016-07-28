@@ -29,9 +29,7 @@ function convertToDexecureURL(url) {
 
 function isDefiniteImageURL(url) {
   var parsedURL =  new URL(url);
-  console.log('parsedURL.host.toLowerCase() is ', parsedURL.host.toLowerCase());
   for (var i = dexecure.confirmedImageDomains.length - 1; i >= 0; i--) {
-    console.log('checking with ', dexecure.confirmedImageDomains[i].toLowerCase());
     if (dexecure.confirmedImageDomains[i].toLowerCase() == parsedURL.host.toLowerCase()) {
       return true;
     }
@@ -73,7 +71,7 @@ if (dexecure.optimisationsEnabled) {
     var headersToSend = new Headers(headersToSendJS);
     var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
 
-    if (isDefiniteImageURL(event.request.url.toLowerCase()) || imageMatchRegex.test(event.request.url.toLowerCase()) && isFirstPartyDomain(event.request.url)) {
+    if ((isDefiniteImageURL(event.request.url.toLowerCase()) || imageMatchRegex.test(event.request.url.toLowerCase())) && isFirstPartyDomain(event.request.url)) {
      var dexecureURL = convertToDexecureURL(event.request.url);
      var signatureSeparator = '';
      var signatureComponent = '';
@@ -87,11 +85,12 @@ if (dexecure.optimisationsEnabled) {
       signatureComponent = separatedComponents['potentialSignature'];
       dexecureURL = decodeURIComponent(dexecureURL);
      }
-     console.log('dexecureURL is ', dexecureURL);
-     console.log('signatureComponent is ', signatureComponent);
-     if (dexecure.debugMode)
+     if (dexecure.debugMode) {
+      console.log('dexecureURL is ', dexecureURL);
+      console.log('signatureComponent is ', signatureComponent);
       console.log('Modified url is ', dexecureURL);
-     let muraliHeaders = new Headers();
+     }
+      
      if (signatureComponent && signatureComponent.length > 0) {
       headersToSend.append('signaturepresent', 'true');
       headersToSend.append('signatureseparator', '/');

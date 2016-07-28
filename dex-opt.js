@@ -36,6 +36,7 @@ function isDefiniteImageURL(url) {
       return true;
     }
   }
+  return false;
 }
 
 function isFirstPartyDomain(url) {

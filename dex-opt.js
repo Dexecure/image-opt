@@ -24,6 +24,7 @@ if (dexecure.optimisationsEnabled) {
     }
 
     if (event.request.headers.has('Accept-Encoding')) {
+      headersToSendJS['Dex-Accept-Encoding'] = event.request.headers.get('Accept-Encoding');
     }
     
     var headersToSend = new Headers(headersToSendJS);

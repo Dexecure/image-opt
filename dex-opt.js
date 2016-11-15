@@ -22,6 +22,9 @@ if (dexecure.optimisationsEnabled) {
     if (event.request.headers.has('Accept')) {
       headersToSendJS['Accept'] = event.request.headers.get('Accept');
     }
+
+    if (event.request.headers.has('Accept-Encoding')) {
+    }
     
     var headersToSend = new Headers(headersToSendJS);
     var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");

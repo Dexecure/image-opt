@@ -199,8 +199,8 @@ if (dexecure.optimisationsEnabled) {
                         if (dexecure.debugMode)
                             console.log('output url is ', dexecureURL);
                         return new Promise((resolve, reject) => {
-                            setTimeout(reject(), dexecure.timeoutDuration);
-                            fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
+                            setTimeout(reject, dexecure.timeoutDuration);
+                            return fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
                             .then(response => {
                                 if (response.ok) {
                                     return response;
@@ -210,13 +210,13 @@ if (dexecure.optimisationsEnabled) {
                                     throw new Error('Unable to fetch optimised image');
                                 }
                             })
-                            .catch(err => {
-                                if (dexecure.debugMode) {
-                                    console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
-                                    console.log('The error was ', err);
-                                }
-                                return fetch(event.request);
-                            })
+                        })
+                        .catch(err => {
+                            if (dexecure.debugMode) {
+                                console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
+                                console.log('The error was ', err);
+                            }
+                            return fetch(event.request);
                         })
                     })
                 );

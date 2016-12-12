@@ -8,5 +8,5 @@
     "optimisationsEnabled": true,
     "imageMatchRegex": "\\.jpe?g|\\.png|\\.js(\\?.*)?(#.*)?$|\\.css",
     "textMatchRegex": "\\.js|\\.css",
-	"timeoutDuration": 5000
+	"timeoutDuration": 60000
 }

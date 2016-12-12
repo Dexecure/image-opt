@@ -1,4 +1,13 @@
 {
-    "server": "https://YourURL.cloudfront.net/",
-    "firstPartyDomain": ["images.website.com", "media.website.com"]
+    "server": {
+    	"img.website.com": "AAA.cloudfront.net",
+        "website.com": "BBB.cloudfront.net",
+        "www.website.com": "BBB.cloudfront.net"
+    },
+    "firstPartyDomain": ["website.com", "www.website.com", "img.website.com"],
+    "pagesEnabled": [""],
+    "debugMode": false,
+    "optimisationsEnabled": true,
+    "imageMatchRegex": "\\.jpe?g|\\.png|\\.js(\\?.*)?(#.*)?$|\\.css",
+    "textMatchRegex": "\\.js|\\.css"
 }

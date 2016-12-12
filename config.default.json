@@ -3,7 +3,7 @@
     	"original_domain.com": "original_domain.dexecure.net"
     },
     "firstPartyDomain": ["original_domain.com"],
-    "pagesEnabled": [""],
+    "pagesEnabled": ["/page1.html", "/page2.html"],
     "debugMode": false,
     "optimisationsEnabled": true,
     "imageMatchRegex": "\\.jpe?g|\\.png|\\.js(\\?.*)?(#.*)?$|\\.css",

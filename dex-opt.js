@@ -26,31 +26,30 @@ function isCloudflareURL(inputURL) {
 }
 
 function isPageEnabled(referrerURL) {
-    /*
     if (!referrerURL) {
-      if(dexecure.debugMode) 
+    if(dexecure.debugMode) 
         console.log('returning isPageEnabled false due to no referrer')
-      return false;
+    return false;
     }
     var parsedURL = new URL(referrerURL);
     var urlToMatchAgainst = parsedURL.origin + parsedURL.pathname;
     if(dexecure.debugMode) {
-      console.log('parsed URL is', urlToMatchAgainst)
-      console.log('matching URL is ', referrerURL);
+    console.log('parsed URL is', urlToMatchAgainst)
+    console.log('matching URL is ', referrerURL);
     }
 
     for (var i = dexecure.pagesEnabled.length - 1; i >= 0; i--) {
-      if (urlToMatchAgainst.indexOf(dexecure.pagesEnabled[i]) == 0) {
+    if (urlToMatchAgainst.indexOf(dexecure.pagesEnabled[i]) == 0) {
         if (dexecure.debugMode)
-          console.log('dexecure.pagesEnabled[i] is ', dexecure.pagesEnabled[i]);
+        console.log('dexecure.pagesEnabled[i] is ', dexecure.pagesEnabled[i]);
         return true;
-      } else {
+    } else {
         if (dexecure.debugMode) {
-          console.log('dexecure.pagesEnabled[i] does not match ', dexecure.pagesEnabled[i])
-          console.log('parsedURL.hostname + parsedURL.pathname.indexOf(dexecure.pagesEnabled[i]) is ', (urlToMatchAgainst).indexOf(pagesEnabled[i]));
+        console.log('dexecure.pagesEnabled[i] does not match ', dexecure.pagesEnabled[i])
+        console.log('parsedURL.hostname + parsedURL.pathname.indexOf(dexecure.pagesEnabled[i]) is ', (urlToMatchAgainst).indexOf(pagesEnabled[i]));
         }
-      }
-    }*/
+    }
+    }
     return true;
 }
 
@@ -154,62 +153,70 @@ if (dexecure.optimisationsEnabled) {
     });
 
     self.addEventListener('fetch', function(event) {
+            if (!event.clientId) return fetch(e.request);
             if (dexecure.debugMode)
                 console.log('fetch triggered');
 
-            var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
-            var textMatchRegex = new RegExp(dexecure.textMatchRegex, "i");
-            var isImageRequest = imageMatchRegex.test(event.request.url.toLowerCase());
-            var isTextRequest = textMatchRegex.test(event.request.url.toLowerCase());
+            return self.clients.get(event.clientId).then(client => {
+            const clientURL = new URL(client.url);
 
-            if (dexecure.debugMode)
-                console.log('input url is ', event.request.url);
+                if (!isPageEnabled(clientURL.pathname)) {
+                    return fetch(event.request);
+                }
+                var imageMatchRegex = new RegExp(dexecure.imageMatchRegex, "i");
+                var textMatchRegex = new RegExp(dexecure.textMatchRegex, "i");
+                var isImageRequest = imageMatchRegex.test(event.request.url.toLowerCase());
+                var isTextRequest = textMatchRegex.test(event.request.url.toLowerCase());
 
-            if (event.request.method != 'GET') {
-              return;
-            }
+                if (dexecure.debugMode)
+                    console.log('input url is ', event.request.url);
 
-            var shouldOptimize = isPageEnabled(event.request.referrer) && (isImageRequest || isTextRequest) && isFirstPartyDomain(event.request.url) && !isCloudflareURL(event.request.url);
-            if (!shouldOptimize) {
-              return;
-            }
+                if (event.request.method != 'GET') {
+                return;
+                }
 
-            event.respondWith(getBrotliStatus()
-                .then((isBrotliSupported) => {
+                var shouldOptimize = (isImageRequest || isTextRequest) && isFirstPartyDomain(event.request.url) && !isCloudflareURL(event.request.url);
+                if (!shouldOptimize) {
+                return;
+                }
 
-                    var headersToSendJS = {};
-                    if (isImageRequest) {
-                        if (event.request.headers.has('Accept')) {
-                            headersToSendJS['Accept'] = event.request.headers.get('Accept');
+                event.respondWith(getBrotliStatus()
+                    .then((isBrotliSupported) => {
+
+                        var headersToSendJS = {};
+                        if (isImageRequest) {
+                            if (event.request.headers.has('Accept')) {
+                                headersToSendJS['Accept'] = event.request.headers.get('Accept');
+                            }
                         }
-                    }
-                    if (isTextRequest && typeof isBrotliSupported !== 'undefined' && isBrotliSupported) {
-                        headersToSendJS['Dex-Accept-Encoding'] = 'br';
-                    }
+                        if (isTextRequest && typeof isBrotliSupported !== 'undefined' && isBrotliSupported) {
+                            headersToSendJS['Dex-Accept-Encoding'] = 'br';
+                        }
 
-                    var headersToSend = new Headers(headersToSendJS);
-                    var dexecureURL = changeToDexecureURL(event.request.url);
-                    dexecureURL = decodeURIComponent(dexecureURL);
-                    if (dexecure.debugMode)
-                        console.log('output url is ', dexecureURL);
-                    return fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
-                        .then(response => {
-                            if (response.ok) {
-                                return response;
-                            } else {
-                                if (dexecure.debugMode)
-                                    console.log('Responding with original image as optimiser was not reachable ', event.request.url);
-                                throw new Error('Unable to fetch optimised image');
-                            }
-                        })
-                        .catch(err => {
-                            if (dexecure.debugMode) {
-                                console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
-                                console.log('The error was ', err);
-                            }
-                            return fetch(event.request);
-                        })
-                })
-            );
+                        var headersToSend = new Headers(headersToSendJS);
+                        var dexecureURL = changeToDexecureURL(event.request.url);
+                        dexecureURL = decodeURIComponent(dexecureURL);
+                        if (dexecure.debugMode)
+                            console.log('output url is ', dexecureURL);
+                        return fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response;
+                                } else {
+                                    if (dexecure.debugMode)
+                                        console.log('Responding with original image as optimiser was not reachable ', event.request.url);
+                                    throw new Error('Unable to fetch optimised image');
+                                }
+                            })
+                            .catch(err => {
+                                if (dexecure.debugMode) {
+                                    console.log('Sending original image as an error occured when trying to optimise ', event.request.url);
+                                    console.log('The error was ', err);
+                                }
+                                return fetch(event.request);
+                            })
+                    })
+                );
+            });
         })
 }

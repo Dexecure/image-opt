@@ -198,7 +198,9 @@ if (dexecure.optimisationsEnabled) {
                         dexecureURL = decodeURIComponent(dexecureURL);
                         if (dexecure.debugMode)
                             console.log('output url is ', dexecureURL);
-                        return fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
+                        return new Promise((resolve, reject) => {
+                            setTimeout(reject(), dexecure.timeoutDuration);
+                            fetch(dexecureURL, { mode: 'cors', headers: headersToSend })
                             .then(response => {
                                 if (response.ok) {
                                     return response;
@@ -215,6 +217,7 @@ if (dexecure.optimisationsEnabled) {
                                 }
                                 return fetch(event.request);
                             })
+                        })
                     })
                 );
             });
